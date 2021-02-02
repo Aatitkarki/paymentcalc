@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/state_manager.dart';
 import 'data_model.dart';
 
-class PaymentCalculationData extends GetxController {
+class AffordabilityCalculationData extends GetxController {
   List<Data> data = List<Data>();
   int touchedIndex;
 
@@ -18,7 +18,6 @@ class PaymentCalculationData extends GetxController {
   double interestRateInput = 10;
   double propertyTaxInput = 10;
   int homeOwnerInsuranceInput = 0;
-  int hoaDuesInput = 0;
 
   int loanTermPeriod = 30;
   int downPaymentAmount = 0;
@@ -46,8 +45,6 @@ class PaymentCalculationData extends GetxController {
           color: Color(0xff584BF5),
           name: "Mortages ins",
           value: mortageInsAmount),
-      Data(
-          color: Color(0xff20DBB4), name: "Taxes + HOA dues", value: taxAmount),
     ];
     update();
   }
@@ -75,11 +72,6 @@ class PaymentCalculationData extends GetxController {
 
   changeHomeInsInput(int input) {
     homeOwnerInsuranceInput = input;
-    reCalculateValues();
-  }
-
-  changeHoaDuesInput(int input) {
-    hoaDuesInput = input;
     reCalculateValues();
   }
 
@@ -114,10 +106,8 @@ class PaymentCalculationData extends GetxController {
 
   calculateTax() {
     int annualTaxAmount = (priceInput * (propertyTaxInput / 100)).toInt();
-    taxAmount = annualTaxAmount / 12 + hoaDuesInput;
-
+    taxAmount = annualTaxAmount / 12;
     data[2].value = double.parse((taxAmount).toStringAsFixed(1));
-    data[4].value = double.parse((taxAmount).toStringAsFixed(1));
     // update();
   }
 

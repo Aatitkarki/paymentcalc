@@ -5,10 +5,40 @@ import 'package:paymentCalcApp/data/data_model.dart';
 import 'package:paymentCalcApp/data/payment_calculator_data.dart';
 
 List<PieChartSectionData> getSections(int touched, bool isMortageSelected) {
-  PaymentCalculationData data = Get.find();
+  PaymentCalculationData paymentCalculationData = Get.find();
 
   List<PieChartSectionData> pieChartData;
-  pieChartData = data.data
+  List<Data> pieRawData = List<Data>();
+  // pieRawData = paymentCalculationData.data;
+  if (paymentCalculationData.mortageInsAmount > 1) {
+    pieRawData.add(paymentCalculationData.data[3]);
+  }
+  if (paymentCalculationData.principalAndVatAmount > 1) {
+    pieRawData.add(paymentCalculationData.data[1]);
+  }
+  if (paymentCalculationData.homeInsamount > 1) {
+    pieRawData.add(paymentCalculationData.data[0]);
+  }
+  if (paymentCalculationData.hoaDuesInput > 0) {
+    pieRawData.add(paymentCalculationData.data[4]);
+  } else if (paymentCalculationData.taxAmount > 1) {
+    pieRawData.add(paymentCalculationData.data[2]);
+  }
+
+  // if (paymentCalculationData.mortageInsAmount < 1) {
+  //   pieRawData.removeWhere((item) => item.name == 'Mortages ins');
+  // }
+  // if (paymentCalculationData.homeInsamount < 1) {
+  //   pieRawData.removeWhere((item) => item.name == 'Home Ins');
+  // }
+  // if (paymentCalculationData.taxAmount < 1) {
+  //   pieRawData.removeWhere((item) => item.name == 'Taxes');
+  // }
+  // if (paymentCalculationData.principalAndVatAmount < 1) {
+  //   pieRawData.removeWhere((item) => item.name == 'Principal & Int');
+  // }
+
+  pieChartData = pieRawData
       .asMap()
       .map<int, PieChartSectionData>((index, data) {
         final isTouched = index == touched;
@@ -25,7 +55,6 @@ List<PieChartSectionData> getSections(int touched, bool isMortageSelected) {
       })
       .values
       .toList();
-  isMortageSelected ? null : pieChartData.removeAt(3);
 
   return pieChartData;
 }
